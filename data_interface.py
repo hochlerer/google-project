@@ -5,3 +5,6 @@ def getSentence(index):
 
 def getSentIndex(word):
     return data_structure[word]
+
+def sort_sentences(word_list):
+    return [all_data[word] for word in word_list].sort()
