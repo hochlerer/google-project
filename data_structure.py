@@ -1,16 +1,17 @@
 from collections import defaultdict
-
+from auxiliary_functions import *
+data = ""
 with open("about.txt") as data_file:
-     data = data_file.read().split("\n")
+     all_data = data_file.read().split("\n")
 
 
 data_structure = defaultdict(set)
 
-for i in range(len(data)):
-    for j in range(len(data[i])):
-        for k in range(j+1, len(data[i])+1):
-            data_structure[data[i][j:k]].add(i)
-            data_structure[data[i][k:j]].add(i)
+for i in range(len(all_data)):
+    for j in range(len(all_data[i])):
+        for k in range(j+1, len(all_data[i])+1):
+            data_structure[ignore_delimiters(all_data[i][j:k])].add(i)
+            data_structure[ignore_delimiters(all_data[i][k:j])].add(i)
 
 data_structure.pop("")
 
