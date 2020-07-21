@@ -9,3 +9,6 @@ def getSentIndex(word):
 def sort_sentences(word_list):
     sorted = [all_data[word] for word in word_list].sort()
     return [all_data.index(word) for word in word_list]
+
+def offset(index, word):
+    return all_data[index].find(word)
