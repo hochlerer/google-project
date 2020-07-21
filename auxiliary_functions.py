@@ -1,3 +1,6 @@
-def ignore_delimiters(word):
+import re
 
-    return word
+
+def ignore_delimiters(word):
+    word = word.lower()
+    return "".join(re.split("[\W+ _]", word))
