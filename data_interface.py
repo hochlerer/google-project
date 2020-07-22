@@ -18,7 +18,8 @@ def offset(index, word):
     return get_sentence(index).find(word)
 
 
-def replace_char(word, on_top):
+def replace_char(word, best_indexes):
+    on_top = 5- len(best_indexes)
     results = []
     for i in range(len(word)-1, -1, -1):
         if len(results) != 0:
@@ -29,16 +30,19 @@ def replace_char(word, on_top):
             if indexes:
                 score = 5 - i if i < 5 else 1
                 for j in indexes:
-                    results.append({"sentence_index": j,
-                                    "src": j,
-                                    "offset": offset(j, new_word),
-                                    "score": len(word) * 2 - score})
+                    if j not in best_indexes:
+                        results.append({"sentence_index": j,
+                                        "src": j,
+                                        "offset": offset(j, new_word),
+                                        "score": len(word) * 2 - score})
+                        best_indexes.append(j)
                 break
 
     return results[:on_top]
 
 
-def delete_char(word, on_top):
+def delete_char(word, best_indexes):
+    on_top = 5- len(best_indexes)
     results = []
     for i in range(len(word) - 1, -1, -1):
         if len(results) != 0:
@@ -49,16 +53,19 @@ def delete_char(word, on_top):
             if indexes:
                 score = 10 - 2 * i if i < 4 else 2
                 for j in indexes:
-                    results.append({"sentence_index": j,
-                                    "src": j,
-                                    "offset": offset(j, new_word),
-                                    "score": len(word) * 2 - score})
+                    if j not in best_indexes:
+                        results.append({"sentence_index": j,
+                                        "src": j,
+                                        "offset": offset(j, new_word),
+                                        "score": len(word) * 2 - score})
+                        best_indexes.append(j)
                 break
 
     return results[:on_top]
 
 
-def add_char(word, on_top):
+def add_char(word, best_indexes):
+    on_top = 5- len(best_indexes)
     results = []
     for i in range(len(word)-1, -1, -1):
         new_word = word[:i] + word[i+1:]
@@ -66,32 +73,28 @@ def add_char(word, on_top):
         if indexes:
             score = 10 - 2*i if i < 4 else 2
             for j in indexes:
-                results.append({"sentence_index": j,
-                                "src": j,
-                                "offset": offset(j, new_word),
-                                "score": len(word) * 2 - score})
+                if j not in best_indexes:
+                    results.append({"sentence_index": j,
+                                    "src": j,
+                                    "offset": offset(j, new_word),
+                                    "score": len(word) * 2 - score})
+                    best_indexes.append(j)
             break
 
     return results[:on_top]
 
 
-
-def fix_word(word, on_top):
-    replace = replace_char(word, on_top)
-    delete = delete_char(word, on_top)
-    add = add_char(word, on_top)
+def fix_word(word, best_sentences):
+    on_top = 5- len(best_sentences)
+    best_indexes = best_sentences[::]
+    replace = replace_char(word, best_indexes)
+    delete = delete_char(word, best_indexes)
+    add = add_char(word, best_indexes)
 
     most_rate = replace + delete + add
     most_rate = sorted(most_rate, key=lambda k: k["score"], reverse=True)
     return most_rate[:on_top]
 
-
-
-    # if len(replace) == on_top:
-    #     if len(delete) == on_top:
-    #         if len(add) == on_top:
-    #             return
-    return most_rate[:on_top]
 
 
 
