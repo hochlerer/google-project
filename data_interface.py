@@ -2,18 +2,16 @@ from auto_complete_data import AutoCompleteData
 from data_structure import *
 
 
-def getSentence(index):
+def get_sentence(index):
     return all_data[index]
 
 
-def getSentIndex(word):
+def get_sentIndex(word):
     return data_structure[word]
 
 
-def sort_sentences(word_list):
-    word_list = [all_data[word] for word in word_list]
-    word_list.sort()
-    return [all_data.index(word) for word in word_list]
+def get_sentence_src(index):
+    return data_source[index]
 
 
 def offset(index, word):
@@ -42,7 +40,7 @@ def sentences_after_fixing(word, best_completions):
     on_top = 5-len(best_completions)
     num_of_elements = on_top if len(results) > on_top else len(results)
     for i in range(num_of_elements):
-        best_completions.append(AutoCompleteData(getSentence(results[i]), "", offset(results[i], new_word), len(word)*2 -score))
+        best_completions.append(AutoCompleteData(get_sentence(results[i]), "", offset(results[i], new_word), len(word) * 2 - score))
 
     return best_completions
 
