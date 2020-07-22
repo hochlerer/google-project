@@ -14,6 +14,11 @@ def complete(prefix):
         # offset- עם תוים?
         best_completions.append(AutoCompleteData(get_sentence(results[i]), get_sentence_src(results[i]), offset(results[i], prefix), len(prefix) * 2))
 
+    fit_sents = fix_word(prefix_ignore_del, 5- len(best_completions))
+    for sent in fit_sents:
+        best_completions.append(AutoCompleteData(get_sentence(sent["sentence_index"]), get_sentence_src(sent["src"]), sent["offset"], sent["score"]))
+
+    return best_completions
     # if(len(results)<5):
     #     temp1 = sentences_after_fixing(prefix_ignore_del, best_completions[::])
     # # החלפה

@@ -15,33 +15,45 @@ def get_sentence_src(index):
 
 
 def offset(index, word):
-    return all_data[index].find(word)
+    return get_sentence(index).find(word)
+
+def replace_char(word, on_top):
+    results = []
+    for i in range(len(word)-1, -1, -1):
+        if len(results) != 0:
+            break
+        for ltr in range(ord('a'), ord('z')+1):
+            new_word = word[:i] + chr(ltr) + word[i+1:]
+            indexes = data_structure.get(new_word)
+            if indexes:
+                score = 5 - i if i < 5 else 1
+                for j in indexes:
+                    results.append({"sentence_index": j,
+                                    "src": j,
+                                    "offset": offset(j, new_word),
+                                    "score": len(word) * 2 - score})
+                break
+
+    return results[:on_top]
+
+
+def delete_char(word, on_top):
     pass
 
 
-def sentences_after_fixing(word, best_completions):
-    equal = -1
-    results = []
-    for i in range(len(word)-1,-1,-1):
-        if(-1 == equal):
-            for ltr in range(ord('a'), ord('z')):
-                index = data_structure.get(word[:i] + "ltr" + word[i+1:])
-                if index:
-                    equal = i
-                    results = [word for word in index]
-                    break
+def add_char(word, on_top):
+    pass
 
-    new_word = word[:equal]+ ltr + word[equal+1:]
-    if equal > 0:
-        results = sort_sentences(results)
 
-    score = 5-equal if equal<5 else 1
+def fix_word(word, on_top):
+    replace = replace_char(word, on_top)
+    delete = delete_char(word, on_top)
+    add = add_char(word, on_top)
 
-    on_top = 5-len(best_completions)
-    num_of_elements = on_top if len(results) > on_top else len(results)
-    for i in range(num_of_elements):
-        best_completions.append(AutoCompleteData(get_sentence(results[i]), "", offset(results[i], new_word), len(word) * 2 - score))
-
-    return best_completions
+    # if len(replace) == on_top:
+    #     if len(delete) == on_top:
+    #         if len(add) == on_top:
+    #             return
+    return replace
 
 
