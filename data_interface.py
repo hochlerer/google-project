@@ -41,5 +41,6 @@ def sentences_after_fixing(word, best_completions):
     for i in range(num_of_elements):
         best_completions.append(AutoCompleteData(getSentence(results[i]), "", offset(results[i], new_word), len(word)*2 -score))
 
+    return best_completions
 
 
