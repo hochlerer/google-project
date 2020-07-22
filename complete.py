@@ -19,16 +19,3 @@ def complete(prefix):
         best_completions.append(AutoCompleteData(get_sentence(sent["sentence_index"]), get_sentence_src(sent["src"]), sent["offset"], sent["score"]))
 
     return best_completions
-    # if(len(results)<5):
-    #     temp1 = sentences_after_fixing(prefix_ignore_del, best_completions[::])
-    # # החלפה
-    #     pass
-    #
-    # if(len(results)<5):
-    #     temp2 = sentences_after_change(prefix_ignore_del, best_completions[::])
-    # # מחיקה
-    #     pass
-
-    # what should i prefer? temp1 / temp2?
-
-    return best_completions
