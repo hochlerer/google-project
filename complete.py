@@ -19,7 +19,7 @@ def replace_char(word, best_indexes):
                         results.append({"sentence_index": j,
                                         "src": j,
                                         "offset": offset(j),
-                                        "score": len(word) * 2 - score})
+                                        "score": (len(word)-1) * 2 - score})
                         best_indexes.append(j)
                 break
 
@@ -36,13 +36,13 @@ def delete_char(word, best_indexes):
             new_word = word[:i] + chr(ltr) + word[i:]
             indexes = data_structure.get(new_word)
             if indexes:
-                score = 10 - 2 * i if i < 4 else 2
+                score = 10 - (2 * i) if i < 4 else 2
                 for j in indexes:
                     if j not in best_indexes:
                         results.append({"sentence_index": j,
                                         "src": j,
                                         "offset": offset(j),
-                                        "score": len(word) * 2 - score})
+                                        "score": (len(word)-1) * 2 - score})
                         best_indexes.append(j)
                 break
 
@@ -56,13 +56,13 @@ def add_char(word, best_indexes):
         new_word = word[:i] + word[i+1:]
         indexes = data_structure.get(new_word)
         if indexes:
-            score = 10 - 2*i if i < 4 else 2
+            score = 10 - (2*i) if i < 4 else 2
             for j in indexes:
                 if j not in best_indexes:
                     results.append({"sentence_index": j,
                                     "src": j,
                                     "offset": offset(j),
-                                    "score": len(word) * 2 - score})
+                                    "score": (len(word)-1) * 2- score})
                     best_indexes.append(j)
             break
 
